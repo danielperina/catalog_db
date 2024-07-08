@@ -1,19 +1,20 @@
 import mysql.connector
 
+from secret_vars import USER, PASSWORD, HOST, DATABASE
+
 import tkinter as tk
 from tkinter.constants import *
 from tkinter import filedialog
-
 from tkinter import messagebox
 
 from PIL import Image, ImageTk
 
 def conectar_bd():
     return mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='',
-        database='catalog'
+        host=HOST,
+        user=USER,
+        password=PASSWORD,
+        database=DATABASE
     )
 
 def resize_image(image: Image):
