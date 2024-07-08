@@ -124,9 +124,14 @@ def update():
 win = tk.Tk()
 win.title("Cadastrar planta")
 win.geometry("520x210")
-# win.maxsize(width=520, height=210)
-# win.minsize(width=520, height=210)
 win.resizable(width=False, height=False)
+
+# Carregando a imagem do ícone
+icon_image = Image.open("resources\icon\icon.png")
+icon_photo = ImageTk.PhotoImage(icon_image)
+
+# Definindo o ícone da janela
+win.iconphoto(False, icon_photo)
 
 # id para atualizar
 tk.Label(win, text="id (atualizar):").place(x=5, y=5)
