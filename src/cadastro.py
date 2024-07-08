@@ -29,16 +29,11 @@ def resize_image(image: Image):
     return image
 
 def getfilename():
-    # im.icursor(0)
     try:
         filename = filedialog.askopenfilename()
         im.delete(first=0, last=len(im.get()))
         im.insert(0, filename)
-        original_image = Image.open(filename) #tk.PhotoImage(file=filename)
-        # img = resize_image(img, (200, 200))
-        # (100/img.width(), 100/img.height())
-        # img = img.zoom(1,1)
-        # img = img.subsample(img.width()//200, img.height()//200)
+        original_image = Image.open(filename)
 
         resized_image = resize_image(original_image)
         photo = ImageTk.PhotoImage(resized_image)
@@ -128,7 +123,7 @@ win.geometry("520x210")
 win.resizable(width=False, height=False)
 
 # Carregando a imagem do ícone
-icon_image = Image.open("resources\icon\icon.png")
+icon_image = Image.open("resources\\icon\\icon.png")
 icon_photo = ImageTk.PhotoImage(icon_image)
 
 # Definindo o ícone da janela
