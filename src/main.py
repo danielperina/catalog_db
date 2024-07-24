@@ -1,20 +1,25 @@
-import mysql.connector
+import mysql.connector # Para conexão com o mysql server
 
-from secret_vars import USER, PASSWORD, HOST, DATABASE
+from secret_vars import USER, PASSWORD, HOST, DATABASE # Dados para acesso ao banco
 
+# Lib tkinter para a interface gráfica
 import tkinter as tk
 from tkinter.constants import *
 from tkinter import filedialog
 from tkinter import messagebox
 
+# Lib Pillow para manipulação de imagens
 from PIL import Image, ImageTk
 
+# Cores e fontes para a interface gráfica
 MAINBGCOLOR = "#2B9468"
 MAINFGCOLOR = "#ffffff"
 MAINFONT = ("Courier New", 20, "bold")
 
 MAINFRAMEBGCOLOR = "#F9F3E5"
 
+
+# classe para adição de placeholder no componente Entry
 class PlaceholderEntry(tk.Entry):
     def __init__(self, master=None, placeholder="PLACEHOLDER", color='grey'):
         super().__init__(master)
@@ -28,7 +33,7 @@ class PlaceholderEntry(tk.Entry):
 
         self.put_placeholder()
 
-    def put_placeholder(self):
+    def put_placeholder(self): # insere o placeholder se a entry estiver vazia
         if not self.get():
             self.insert(0, self.placeholder)
             self['fg'] = self.placeholder_color
@@ -42,17 +47,17 @@ class PlaceholderEntry(tk.Entry):
         #if not self.get():
         self.put_placeholder()
 
-    def get(self):
+    def get(self): # pega o valor da entry
         if self['fg'] == self.placeholder_color:
             return ''
         else:
             return super().get()
 
-    def reset(self):
+    def reset(self): # deleta os dados escritos na entry
         self.delete(0, tk.END)
         self.focus()
 
-def conectar_bd():
+def conectar_bd(): # retorna a conexão com o banco de dados
     return mysql.connector.connect(
         host=HOST,
         user=USER,
@@ -60,6 +65,7 @@ def conectar_bd():
         database=DATABASE
     )
 
+# verifica se o id é válido
 def check_planta_id(planta_id: int) -> bool:
     
     db = conectar_bd()
@@ -75,6 +81,7 @@ def check_planta_id(planta_id: int) -> bool:
 
     return exists
 
+# manipulação da imagem
 def resize_image(image: Image):
     max_size = (img_canvas.winfo_width(), img_canvas.winfo_height())
     width, height = image.size
@@ -91,6 +98,7 @@ def resize_image(image: Image):
 
     return final_image
 
+# Obtém o diretório da imagem e insere no componente canvas
 def getfilename():
     global img_canvas
     global img_dir
@@ -111,6 +119,7 @@ def getfilename():
         # im.delete(0, len(im.get()))
         messagebox.showwarning("Erro", e)
 
+# Insere os dados na tabela planta
 def insert():
     global nomeC, nomeP, desc, img_dir
 
@@ -153,6 +162,7 @@ def insert():
     except Exception as e:
         messagebox.showwarning("Erro", e)
 
+# Atualiza os dados da tabela planta
 def update():
     global idP, nomeC, nomeP, desc, img_dir
 
@@ -216,6 +226,7 @@ def update():
     except Exception as e:
         messagebox.showwarning("Erro", e)
 
+# Frame de cadastro
 def frame_insert():
     global main_frame
     global img_canvas
@@ -249,6 +260,7 @@ def frame_insert():
     img_canvas = tk.Canvas(main_frame, bg="gray", width=250, height=250)
     img_canvas.pack(padx=10, pady=10)
 
+# Frame de Atualização
 def frame_update():
     global main_frame
     global img_canvas
@@ -285,6 +297,7 @@ def frame_update():
     img_canvas = tk.Canvas(main_frame, bg="gray", width=250, height=250)
     img_canvas.pack(padx=10, pady=10)
 
+# Menu
 def toggle_menu():
     
     def collapse_toggle_menu():
@@ -313,12 +326,15 @@ def toggle_menu():
     toggle_menu_fm.place(x=0, y=50, height=window_height, width=200)
     toggle_btn.configure(text="X", command=collapse_toggle_menu)
 
-root = tk.Tk()
-root.geometry("300x500")
-root.title("Plantas")
-root.resizable(width=False, height=False)
-icon = tk.PhotoImage(file='resources\\icon\\icon.png')
-root.iconphoto(True, icon)
+# Configurações da Janela
+root = tk.Tk() # Janela
+root.geometry("300x500") # Tamanho da janela
+root.title("Plantas") # Título da janela
+root.resizable(width=False, height=False) # Torna o tamanho fixo
+icon = tk.PhotoImage(file='resources\\icon\\icon.png') # Obtém o ícone
+root.iconphoto(True, icon) # Insere o ícone
+
+# Layout da Janela
 
 head_frame = tk.Frame(root, bg=MAINBGCOLOR, 
     highlightbackground=MAINFGCOLOR,
@@ -370,4 +386,6 @@ img_dir = ""
 img_canvas = tk.Canvas(main_frame, bg="gray", width=250, height=250)
 img_canvas.pack(padx=10, pady=10)
 
+
+# Roda a janela
 root.mainloop()
